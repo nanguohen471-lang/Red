@@ -1,168 +1,852 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#090a0f" />
-  <title>生命數字占卜之旅 </title>
+<!doctype html>
+<html lang="zh-TW" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>直覺塔羅</title>
+  <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-    :root { color-scheme: dark; }
-    html, body { height: 100%; }
-    body { font-family: 'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; background: radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%); }
-    .starry::before{ content:''; position:fixed; inset:0; z-index:-1; background-image:
-        radial-gradient(2px 2px at 20px 30px,#eee,transparent),
-        radial-gradient(2px 2px at 40px 70px,rgba(255,255,255,.8),transparent),
-        radial-gradient(1px 1px at 90px 40px,#fff,transparent),
-        radial-gradient(1px 1px at 130px 80px,rgba(255,255,255,.6),transparent),
-        radial-gradient(2px 2px at 160px 30px,#ddd,transparent);
-      background-repeat: repeat; background-size: 200px 100px; animation: sparkle 20s linear infinite; }
-    @keyframes sparkle{from{transform:translateX(0)}to{transform:translateX(200px)}}
-    .rainbow-gradient{background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57,#ff9ff3,#54a0ff);background-size:400% 400%;animation:rainbow 3s ease infinite}
-    .rainbow-text{background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57,#ff9ff3,#54a0ff);background-size:400% 400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rainbow 3s ease infinite}
-    @keyframes rainbow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-    .pulse-glow{animation:pulse-glow 2s ease-in-out infinite alternate}
-    @keyframes pulse-glow{from{box-shadow:0 0 20px rgba(255,255,255,.3)}to{box-shadow:0 0 30px rgba(255,255,255,.6),0 0 40px rgba(255,255,255,.3)}}
-    .sparkle-card{position:relative;animation:sparkle-glow 2s ease-in-out infinite alternate}
-    .sparkle-card::before{content:'';position:absolute;inset:-2px;background:linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57,#ff9ff3,#54a0ff);border-radius:14px;z-index:-1;animation:sparkle-rotate 3s linear infinite}
-    @keyframes sparkle-glow{from{box-shadow:0 0 15px rgba(255,255,255,.4),0 0 25px rgba(255,255,255,.2)}to{box-shadow:0 0 25px rgba(255,255,255,.6),0 0 35px rgba(255,255,255,.4),0 0 45px rgba(255,255,255,.2)}}
-    @keyframes sparkle-rotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-    .fade-in{animation:fadeIn .6s ease-out}@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    @media (prefers-reduced-motion: reduce){ .rainbow-gradient,.rainbow-text,.pulse-glow,.sparkle-card,.fade-in,.starry::before{animation:none!important}}
-    .safe-bottom{padding-bottom: max(env(safe-area-inset-bottom), 16px);} .safe-top{padding-top: max(env(safe-area-inset-top), 16px);}
-    .card{perspective:1000px;cursor:pointer} .card-inner{position:relative;width:100%;height:100%;text-align:center;transition:transform .8s;transform-style:preserve-3d}
-    .card.flipped .card-inner{transform:rotateY(180deg)} .card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center} .card-front{transform:rotateY(180deg)}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      background-color: #0a0a1f;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    
+    #app {
+      background-color: #0a0a1f;
+      height: 100%;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    #app::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .button-disabled {
+      opacity: 0.5 !important;
+      pointer-events: none !important;
+      cursor: not-allowed !important;
+    }
+    
+    @media (min-width: 1366px) {
+      .main-container {
+        transform: scale(1.05);
+        transform-origin: center center;
+      }
+      .home-logo {
+        max-width: 320px !important;
+      }
+      .home-title {
+        font-size: 1.8rem !important;
+      }
+      .home-subtitle {
+        font-size: 1.2rem !important;
+      }
+      .main-button {
+        font-size: 1.3rem !important;
+        padding: 1.3rem !important;
+      }
+      .secondary-button {
+        font-size: 1rem !important;
+        padding: 0.9rem !important;
+      }
+      .result-card-display {
+        max-width: 420px !important;
+      }
+      .animation-title {
+        font-size: 2rem !important;
+      }
+    }
+    
+    @media (min-width: 1920px) and (min-height: 1080px) {
+      .main-container {
+        transform: scale(1.15);
+      }
+      .home-content-box {
+        max-width: 750px !important;
+      }
+    }
+    
+    @media (min-width: 768px) and (max-width: 1365px) {
+      .main-container {
+        transform: scale(1.0);
+      }
+    }
+    
+    @media (max-width: 767px) and (orientation: portrait) {
+      .home-content-box {
+        padding: 1.2rem 1rem !important;
+      }
+      .button-grid {
+        gap: 0.8rem !important;
+      }
+    }
+    
+    @media (max-width: 896px) and (orientation: landscape) {
+      .home-content-box {
+        max-width: 600px !important;
+        padding: 1rem !important;
+      }
+    }
+    
+    @keyframes fairySpread {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+      }
+      30% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.6) rotate(720deg);
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    @keyframes glow {
+      0%, 100% { 
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3),
+                    0 0 40px rgba(255, 215, 0, 0.15);
+      }
+      50% { 
+        box-shadow: 0 0 35px rgba(255, 215, 0, 0.5),
+                    0 0 70px rgba(255, 215, 0, 0.25);
+      }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    
+    @keyframes slideIn {
+      from { 
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes breathe {
+      0%, 100% { 
+        transform: scale(1);
+        opacity: 0.9;
+      }
+      50% { 
+        transform: scale(1.02);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes cardPulse {
+      0%, 100% {
+        box-shadow: 0 0 60px rgba(255, 215, 0, 0.9),
+                    0 0 100px rgba(255, 215, 0, 0.6);
+      }
+      50% {
+        box-shadow: 0 0 80px rgba(255, 215, 0, 1),
+                    0 0 130px rgba(255, 215, 0, 0.8);
+      }
+    }
+    
+    @keyframes runeGlow {
+      0%, 100% { opacity: 0.7; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+      50% { opacity: 1; text-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+    }
+    
+    @keyframes starfield {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100px); }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .glow-animation {
+      animation: glow 3s ease-in-out infinite;
+    }
+    
+    .slide-in {
+      animation: slideIn 0.7s ease-out;
+    }
+    
+    .breathe-animation {
+      animation: breathe 5s ease-in-out infinite;
+    }
+    
+    .rune-symbol {
+      animation: runeGlow 2.5s ease-in-out infinite;
+    }
+    
+    .golden-frame {
+      border: 3px solid #ffd700;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    }
+    
+    .starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200%;
+      pointer-events: none;
+      z-index: 0;
+      animation: starfield 120s linear infinite;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    .tarot-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+    }
+    
+    @media (min-width: 1024px) {
+      .tarot-card:hover {
+        transform: translate(-50%, -50%) scale(1.8) !important;
+        z-index: 1500 !important;
+        box-shadow: 0 0 70px rgba(255, 215, 0, 1) !important;
+        border-color: #ffd700 !important;
+        animation: cardPulse 0.5s ease-in-out infinite !important;
+      }
+    }
+    
+    @media (hover: none) {
+      .tarot-card:active {
+        transform: translate(-50%, -50%) scale(1.5) !important;
+        z-index: 1500 !important;
+      }
+    }
   </style>
-</head>
-<body class="starry min-h-screen flex flex-col">
-  <main id="startPage" class="flex-1 flex flex-col items-center justify-center px-5 safe-top safe-bottom">
-    <div class="text-center fade-in max-w-md w-full">
-      <h1 class="text-4xl font-bold rainbow-text mb-4">探索生命密碼之旅</h1>
-      <p class="text-white/80 text-base leading-relaxed mb-8">
-        你知道嗎？<br>
-        每個生日數字，都藏著一段靈魂的旅程。<br>
-        透過『生命密碼』，<br>你將看見自己最需要被守護的能量：<br>
-        💖是渴望被理解的心？<br>
-        💖還是需要放鬆的身？<br>
-        在這裡，美麗不只是外表，而是一次深度對話，<br>
-        讓你遇見更完整的自己。
-      </p>
-      <button id="startBtn" class="rainbow-gradient text-white text-lg font-semibold w-full py-3 rounded-2xl hover:scale-[1.02] active:scale-[0.99] transition-transform duration-200 pulse-glow">✨ 探索生命密碼 ✨</button>
-    </div>
-  </main>
-
-  <section id="birthdayPage" class="hidden flex-1 flex flex-col items-center justify-center px-5 safe-top safe-bottom">
-    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-6 w-full max-w-sm text-center fade-in">
-      <div class="text-5xl mb-4" aria-hidden="true">🎂</div>
-      <h2 class="text-2xl font-bold text-white mb-1">輸入你的生日</h2>
-      <p class="text-white/70 text-sm mb-5">讓我們探索你的專屬生命密碼</p>
-      <form id="birthdayForm" class="space-y-4">
-        <input type="date" id="birthday" required class="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/60 border border-white/30 focus:border-white/70 focus:outline-none text-base">
-        <button type="submit" class="w-full rainbow-gradient text-white text-base font-semibold py-3 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-transform">啟動密碼</button>
-      </form>
-    </div>
-  </section>
-
-  <section id="lifeNumberPage" class="hidden flex-1 flex flex-col items-center justify-center px-5 safe-top safe-bottom">
-    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-6 w-full max-w-sm text-center fade-in">
-      <div class="text-6xl mb-4" id="lifeNumberIcon">🔮</div>
-      <h2 class="text-lg text-white/80 mb-2">你的生命數字是</h2>
-      <div class="text-6xl font-bold rainbow-text mb-2" id="lifeNumber">7</div>
-      <h3 class="text-xl font-semibold text-white mb-4" id="lifeNumberTitle">靈性探索者</h3>
-      <p class="text-white/80 mb-6 leading-relaxed text-sm" id="lifeNumberDesc">你擁有深刻的直覺和靈性洞察力，總是在尋找生命的更深層意義。</p>
-      <button id="chooseCardBtn" class="rainbow-gradient text-white text-base font-semibold w-full py-3 rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-transform">選擇你的彩虹牌卡 🌈</button>
-    </div>
-  </section>
-
-  <section id="cardPage" class="hidden flex-1 flex flex-col items-center justify-center px-5 py-6 safe-top safe-bottom">
-    <div class="text-center mb-4 fade-in">
-      <h2 class="text-2xl font-bold text-white mb-1">選擇你的彩虹牌卡</h2>
-      <p class="text-white/80 text-sm">用直覺選擇一張牌卡，獲得專屬訊息</p>
-    </div>
-    <div class="grid grid-cols-2 gap-4 max-w-md w-full" id="cardGrid" role="list"></div>
-  </section>
-
-  <section id="resultPage" class="hidden flex-1 flex flex-col items-center px-4 py-4 safe-top safe-bottom overflow-y-auto">
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-4 w-full max-w-sm fade-in">
-      <div class="text-center mb-3">
-        <h1 class="text-lg font-bold rainbow-text">✨ 彩虹能量解讀 ✨</h1>
-        <p class="text-white/80 text-xs">宇宙為你揭示的專屬訊息</p>
-      </div>
-
-      <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/20 mb-3">
-        <h3 class="text-sm font-bold text-white mb-2 flex items-center"><span class="mr-2">🌈</span>你抽到了這張牌</h3>
-        <div class="flex items-center gap-3">
-          <div id="resultCardDisplay" class="w-16 h-20 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg shadow-lg sparkle-card flex flex-col items-center justify-center">
-            <div class="text-white text-2xl" id="resultIcon">🔮</div>
-          </div>
-          <div class="flex-1">
-            <h4 class="font-semibold text-white text-sm" id="cardTitle">紫色彩虹卡</h4>
-            <p class="text-white/70 text-xs" id="resultLifeNumber">7 - 靈性探索者</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/20 mb-3">
-        <h3 class="text-sm font-bold text-white mb-2 flex items-center"><span class="mr-2">💫</span>彩虹能量密語</h3>
-        <p class="text-white/80 text-xs leading-relaxed" id="cardReading">你的專屬能量訊息將在這裡顯示...</p>
-      </div>
-
-      <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/20 mb-3">
-        <h3 class="text-sm font-bold text-white mb-2 flex items-center"><span class="mr-2">🎯</span>生活指引建議</h3>
-        <div class="space-y-2">
-          <div class="bg-white/10 rounded-lg p-2"><h4 class="font-semibold text-white/90 mb-1 text-xs">💝 感情方面</h4><p class="text-white/80 text-xs leading-relaxed" id="loveAdvice">根據你的彩虹能量，感情運勢將會...</p></div>
-          <div class="bg-white/10 rounded-lg p-2"><h4 class="font-semibold text-white/90 mb-1 text-xs">💰 財運方面</h4><p class="text-white/80 text-xs leading-relaxed" id="moneyAdvice">你的財運能量顯示...</p></div>
-          <div class="bg-white/10 rounded-lg p-2"><h4 class="font-semibold text-white/90 mb-1 text-xs">🎯 事業方面</h4><p class="text-white/80 text-xs leading-relaxed" id="careerAdvice">在工作上你適合...</p></div>
-        </div>
-      </div>
-
-      <div class="bg-gradient-to-br from-white/15 to-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/20">
-        <h3 class="text-sm font-bold text-white mb-2 flex items-center"><span class="mr-2">🍀</span>專屬幸運元素</h3>
-        <div class="grid grid-cols-2 gap-2">
-          <div class="bg-white/10 rounded-lg p-2 text-center">
-            <div class="text-lg mb-1" id="luckyColor">🎨</div>
-            <p class="text-white/80 text-xs font-medium">幸運色彩</p>
-            <p class="text-white text-xs" id="luckyColorName">彩虹色</p>
-          </div>
-          <div class="bg-white/10 rounded-lg p-2 text-center">
-            <div class="text-lg mb-1" id="luckyNumber">7️⃣</div>
-            <p class="text-white/80 text-xs font-medium">幸運數字</p>
-            <p class="text-white text-xs" id="luckyNumberValue">7</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 mt-3 safe-bottom">
-        <button id="shareBtn" class="bg-gradient-to-r from-purple-500/50 to-pink-500/50 text-white font-semibold px-4 py-2 rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform text-sm backdrop-blur-sm border border-white/20">📤 分享結果</button>
-        <button id="restartBtn" class="rainbow-gradient text-white font-semibold px-4 py-2 rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform text-sm">🎮 再玩一次</button>
-      </div>
-    </div>
-  </section>
-
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full"></div>
   <script>
-    const lifeNumbers={1:{title:"領導先鋒",icon:"👑",desc:"你是天生的領導者，具有開創精神和獨立自主的特質。"},2:{title:"和諧協調者",icon:"🤝",desc:"你擅長合作與協調，具有敏感的直覺和同理心。"},3:{title:"創意表達者",icon:"🎨",desc:"你充滿創造力和表達欲，總是能為生活帶來歡樂和靈感。"},4:{title:"穩定建設者",icon:"🏗️",desc:"你踏實可靠，具有強烈的責任感和組織能力。"},5:{title:"自由冒險家",icon:"🌍",desc:"你熱愛自由和變化，具有好奇心和冒險精神。"},6:{title:"愛心照護者",icon:"💝",desc:"你充滿愛心和責任感，總是關懷他人的福祉。"},7:{title:"靈性探索者",icon:"🔮",desc:"你擁有深刻的直覺和靈性洞察力，總是在尋找生命的更深層意義。"},8:{title:"成就實現者",icon:"💎",desc:"你具有強烈的成就動機和商業頭腦，能夠實現物質上的成功。"},9:{title:"智慧奉獻者",icon:"🌟",desc:"你具有廣闊的視野和人道主義精神，致力於為世界帶來正面影響。"}};
-    const rainbowCards=[
-      {icon:"🔥",title:"紅色彩虹卡",reading:"會想調整改變，創新。對事情無恐懼，不會顧及周遭的人，自我意識超強。現在是你勇敢突破的時刻，相信自己的直覺去做改變吧！紅色能量代表行動力與熱情，你擁有改變世界的力量。",color:"from-red-400 to-red-600",loveAdvice:"在感情中你很有主見，會主動追求喜歡的人。建議保持熱情但也要學會傾聽對方的想法。",moneyAdvice:"財運方面你敢於投資冒險，但要注意風險控制。適合創業或投資新興產業。",careerAdvice:"適合領導職位或創新工作，你的開創精神會為團隊帶來新的突破。",luckyColor:"🔴",luckyColorName:"熱情紅",luckyNumber:"1️⃣",luckyNumberValue:"1"},
-      {icon:"🧡",title:"橘色彩虹卡",reading:"重溝通。男的脾氣好，女的耳根子軟。你的溝通能力是你最大的優勢，善用你的親和力與人建立良好關係，將為你帶來意想不到的機會。橘色能量象徵溫暖與社交，你是天生的人際關係專家。",color:"from-orange-400 to-orange-600",loveAdvice:"你在感情中很會溝通，容易與人建立深度連結。真誠的表達會為你帶來美好的戀情。",moneyAdvice:"透過人脈和合作會有不錯的財運。適合從事需要溝通協調的工作來增加收入。",careerAdvice:"適合銷售、公關、諮詢等需要溝通技巧的工作。你的親和力是最大的職場優勢。",luckyColor:"🟠",luckyColorName:"溫暖橘",luckyNumber:"2️⃣",luckyNumberValue:"2"},
-      {icon:"💛",title:"黃色彩虹卡",reading:"學習能量強，可學習進修，深造。男的帥女的美，多創意，活潑，無心機，玩心重，似小孩樣。保持你的好奇心和學習熱忱，知識將是你最大的財富。黃色能量代表智慧與創造力，你擁有永不枯竭的學習動力。",color:"from-yellow-400 to-yellow-600",loveAdvice:"你在感情中很天真可愛，容易吸引到欣賞你純真特質的人。保持你的赤子之心。",moneyAdvice:"透過學習新技能或創意發想可以增加收入。投資教育和自我提升會有豐厚回報。",careerAdvice:"適合創意、教育、設計等需要創新思維的工作。你的學習能力會讓你在職場上快速成長。",luckyColor:"🟡",luckyColorName:"智慧黃",luckyNumber:"3️⃣",luckyNumberValue:"3"},
-      {icon:"💚",title:"綠色彩虹卡",reading:"穩紮穩打，事業平穩，家庭要多費心，會以家為重。給人安全感、穩定，花錢時會深思熟慮，打好幾個結。你的穩重是別人依靠的力量。綠色能量象徵成長與和諧，你是家庭和事業的守護者。",color:"from-green-400 to-green-600",loveAdvice:"你在感情中很重視安全感和穩定性，會是很好的伴侶。家庭觀念重，適合長期關係。",moneyAdvice:"理財保守但穩健，適合長期投資和儲蓄。房地產投資對你來說是不錯的選擇。",careerAdvice:"適合需要耐心和責任感的工作，如金融、醫療、教育等。你的可靠性會讓你在職場上受到信任。",luckyColor:"🟢",luckyColorName:"穩定綠",luckyNumber:"4️⃣",luckyNumberValue:"4"},
-      {icon:"💙",title:"藍色彩虹卡",reading:"會超想賺錢，可以旅行沈澱一下。愛自由愛旅行，喜歡有空間，新鮮感，天生財庫，執行力強。讓自己的心靈自由飛翔，財富也會隨之而來。藍色能量代表自由與智慧，你擁有無限的可能性。",color:"from-blue-400 to-blue-600",loveAdvice:"你需要在感情中保有自由空間，適合找一個同樣愛冒險的伴侶。遠距離戀愛對你來說不是問題。",moneyAdvice:"財運很好，特別是透過旅行或國際業務。投資外匯或國際市場會有不錯的收益。",careerAdvice:"適合需要出差旅行或國際化的工作。你的執行力和適應能力會讓你在全球化的職場中發光發熱。",luckyColor:"🔵",luckyColorName:"自由藍",luckyNumber:"5️⃣",luckyNumberValue:"5"},
-      {icon:"💜",title:"靛色彩虹卡",reading:"愛情會有好姻緣。放電數，男女超強放電機。你的魅力無法擋，真愛正在向你靠近，準備好迎接美好的感情吧！靛色能量象徵直覺與魅力，你擁有吸引真愛的神秘力量。",color:"from-indigo-400 to-indigo-600",loveAdvice:"你的魅力很強，容易吸引到優質的對象。相信你的直覺，真命天子/天女即將出現。",moneyAdvice:"透過人際關係和個人魅力可以帶來財運。適合從事美容、時尚、娛樂等與魅力相關的行業。",careerAdvice:"適合需要個人魅力的工作，如演藝、銷售、公關等。你的吸引力會為你打開許多機會之門。",luckyColor:"🟣",luckyColorName:"魅力靛",luckyNumber:"6️⃣",luckyNumberValue:"6"},
-      {icon:"🔮",title:"紫色彩虹卡",reading:"是非對錯，凡事要追根究底，是非分明，看到真理面，和他們溝通重真理。和宗教有緣。你的智慧能看透事物本質，相信你的判斷力。紫色能量代表靈性與智慧，你擁有洞察真相的天賦。",color:"from-purple-400 to-purple-600",loveAdvice:"你在感情中很重視心靈契合，需要找一個能與你深度交流的伴侶。精神層面的連結對你很重要。",moneyAdvice:"透過智慧和洞察力可以在投資上獲利。適合研究型的投資策略，避免盲目跟風。",careerAdvice:"適合需要深度思考和分析的工作，如研究、諮詢、心理學等。你的洞察力是珍貴的職場資產。",luckyColor:"🟪",luckyColorName:"智慧紫",luckyNumber:"7️⃣",luckyNumberValue:"7"},
-      {icon:"🌸",title:"粉紅彩虹卡",reading:"錢財大進大出，所以會大好大壞，有8又有789會賺大錢。因投資而賺錢。你的財運起伏較大，把握機會時要謹慎投資，將有豐厚回報。粉紅能量象徵愛與豐盛，你擁有創造財富的天賦。",color:"from-pink-400 to-pink-600",loveAdvice:"你在感情中很浪漫，容易陷入熱戀。要學會在愛情和理性之間找到平衡。",moneyAdvice:"財運波動較大，適合高風險高回報的投資。要學會在賺錢時適度保守，為低潮期做準備。",careerAdvice:"適合與美感、創意相關的工作。你的審美能力和創造力會為你帶來豐厚的收入。",luckyColor:"🩷",luckyColorName:"豐盛粉",luckyNumber:"8️⃣",luckyNumberValue:"8"},
-      {icon:"✨",title:"金色彩虹卡",reading:"會下重大決定，決定大事。天生聰明，會用智慧使喚別人。你擁有領導者的智慧，重要的決策時刻即將到來，相信你的判斷力。金色能量代表成功與領導力，你註定要成就大事業。",color:"from-yellow-300 to-yellow-500",loveAdvice:"你在感情中很有主導權，容易吸引到仰慕你才華的人。要學會在關係中保持平等和尊重。",moneyAdvice:"具有很強的賺錢能力和商業頭腦。適合大型投資和創業，你的決策能力會帶來巨大財富。",careerAdvice:"天生的領導者，適合管理職位或自己創業。你的智慧和決策能力會讓你在商場上無往不利。",luckyColor:"🟨",luckyColorName:"成功金",luckyNumber:"9️⃣",luckyNumberValue:"9"}
+    // ============================================
+    // 全域狀態管理系統 - 單一真實來源
+    // ============================================
+    const AppState = {
+      currentPage: "home",
+      selectedCard: null,
+      shuffledCards: [],
+      isLocked: false,
+      lastActionTime: 0,
+      activeTimers: new Set(),
+      
+      // 鎖定系統
+      lock() {
+        this.isLocked = true;
+        this.lastActionTime = Date.now();
+      },
+      
+      unlock() {
+        this.isLocked = false;
+      },
+      
+      canExecute() {
+        const now = Date.now();
+        const timeSinceLastAction = now - this.lastActionTime;
+        return !this.isLocked && timeSinceLastAction > 500;
+      },
+      
+      // 清除所有計時器
+      clearAllTimers() {
+        this.activeTimers.forEach(timer => clearTimeout(timer));
+        this.activeTimers.clear();
+      },
+      
+      // 註冊計時器
+      registerTimer(timer) {
+        this.activeTimers.add(timer);
+      }
+    };
+
+    const defaultConfig = {
+      background_color: "#0a0a1f",
+      surface_color: "#1a1a3e",
+      text_color: "#e0e7ff",
+      primary_action_color: "#4338ca",
+      secondary_action_color: "#6366f1",
+      font_family: "sans-serif",
+      font_size: 18,
+      app_title: "威秀影城直覺塔羅牌",
+      app_subtitle: "電影開演前十分鐘\n先來抽一張牌看看\n👉 關心自己的心情狀態\n不問星座，不看血型👀\n更用不到水晶球 🔮\n只有你的直覺最準了！",
+      start_button_text: "啟動神秘塔羅",
+      restart_button_text: "重新抽牌",
+      guide_button_text: "認識22張威秀塔羅牌"
+    };
+
+    const tarotCards = [
+      { name: "愚者", number: "0", image: "https://static.wixstatic.com/media/bd0ac1_62eb3bc839b34c429f34c6fb283651a1~mv2.png", upright: "說走就走型｜適合不做功課直接買票", reversed: "想太多型｜Google了一小時還沒買票" },
+      { name: "魔術師", number: "I", image: "https://static.wixstatic.com/media/bd0ac1_044cc5a9b9a54f458eee0532cbfad7e2~mv2.png", upright: "全副武裝型｜手機、充電寶、外套都帶了", reversed: "丟三落四型｜到影廳才發現票留在家裡" },
+      { name: "女祭司", number: "II", image: "https://static.wixstatic.com/media/bd0ac1_8a7fa38c73e44d6f8c2203c1158db613~mv2.png", upright: "專心觀影型｜最討厭有人在電影院講話", reversed: "心不在焉型｜一直滑手機根本沒在看電影" },
+      { name: "皇后", number: "III", image: "https://static.wixstatic.com/media/bd0ac1_a10de7bc880c46a8b766f67c1757f93d~mv2.png", upright: "享受派｜爆米花、可樂、熱狗全都來一份", reversed: "委屈自己型｜明明想吃想喝，卻不好意思拒絕別人" },
+      { name: "皇帝", number: "IV", image: "https://static.wixstatic.com/media/bd0ac1_4eb5ed4a687e4fdb822bc79e0a65c06e~mv2.png", upright: "準時入場型｜提早15分鐘到，絕不錯過片頭", reversed: "總是遲到型｜都要開演前10分鐘才緩緩走進影廳" },
+      { name: "教皇", number: "V", image: "https://static.wixstatic.com/media/bd0ac1_58b25db21b1643fab5d51056b095030b~mv2.png", upright: "影評專家型｜看完一定要討論劇情和彩蛋", reversed: "不愛聊天型｜看完只想安靜回家" },
+      { name: "戀人", number: "VI", image: "https://static.wixstatic.com/media/bd0ac1_c86393ed4572418a87cb53e24aecb7c9~mv2.png", upright: "情侶看片型｜選片總是要喬到兩個人都喜歡才會買", reversed: "選片難型｜他想看這部你想看那部" },
+      { name: "戰車", number: "VII", image: "https://static.wixstatic.com/media/bd0ac1_782e31d4abeb411fb9b5279be2a0880a~mv2.png", upright: "目標明確型｜一定要搶IMAX最佳座位", reversed: "迷失方向型｜超級糊塗蟲，拿到電影票就找不到影廳" },
+      { name: "力量", number: "VIII", image: "https://static.wixstatic.com/media/bd0ac1_8a465673b747416e955b4cfe7005063d~mv2.png", upright: "淡定看片型｜再恐怖的都不會尖叫", reversed: "容易驚嚇型｜看到刺激畫面就閉眼睛" },
+      { name: "隱者", number: "IX", image: "https://static.wixstatic.com/media/bd0ac1_68d3cc179ded4192bff2b6be5e6dc590~mv2.png", upright: "一個人看片型｜享受獨處的時光", reversed: "孤單寂寞型｜其實很想有人陪" },
+      { name: "命運之輪", number: "X", image: "https://static.wixstatic.com/media/bd0ac1_9ff92a460a3a47a3b413272a972a2159~mv2.png", upright: "隨機選片型｜讓命運決定看什麼", reversed: "倒楣鬼型｜選到爛片踩到大地雷" },
+      { name: "正義", number: "XI", image: "https://static.wixstatic.com/media/bd0ac1_c08fb4bc13374022a62ca814dcec0b16~mv2.png", upright: "客觀評價型｜好片給好評，爛片給負評", reversed: "不公待遇型｜明明是好片卻被罵爆" },
+      { name: "倒吊人", number: "XII", image: "https://static.wixstatic.com/media/bd0ac1_0aecd855ffad4e50a9610a30da9f5120~mv2.png", upright: "換個角度型｜嘗試看一種不同類型的片", reversed: "卡住走不了型｜想看但一直找藉口說時間喬不攏" },
+      { name: "死神", number: "XIII", image: "https://static.wixstatic.com/media/bd0ac1_b7e01dc8cec54ce8821b139491c92ac2~mv2.png", upright: "重新開始型｜把舊的片單清空，開始看新的", reversed: "不想結束型｜電影結束了還捨不得離開" },
+      { name: "節制", number: "XIV", image: "https://static.wixstatic.com/media/bd0ac1_de75abaf6a934e6fbe13a7e5bb392bdb~mv2.png", upright: "平衡觀影型｜不會一口氣追完整個系列", reversed: "過度沉迷型｜曾有連刷三場電影不回家" },
+      { name: "惡魔", number: "XV", image: "https://static.wixstatic.com/media/bd0ac1_30ebc6d16c65430fa58b71514b340e57~mv2.png", upright: "手機成癮型｜看電影一直忍不住滑手機", reversed: "擺脫成癮型｜終於可以專心看電影" },
+      { name: "高塔", number: "XVI", image: "https://static.wixstatic.com/media/bd0ac1_ee44ab0d43d04f7e8487f5a01f8afeec~mv2.png", upright: "大爆雷型｜被劇透超崩潰", reversed: "逃避崩潰型｜不想面對電影的結局真相" },
+      { name: "星星", number: "XVII", image: "https://static.wixstatic.com/media/bd0ac1_3b2935c56d474748b7e1e302a66bda9a~mv2.png", upright: "心情療癒型｜看完電影對人生充滿希望", reversed: "失望透頂型｜期待很高結果卻失望" },
+      { name: "月亮", number: "XVIII", image: "https://static.wixstatic.com/media/bd0ac1_a35da5a86cda4bd2a9844fbf2a9ef3cc~mv2.png", upright: "深夜貓頭鷹型｜深夜看電影特別有感覺", reversed: "看不清楚型｜看完電影完全不知在演什麼" },
+      { name: "太陽", number: "XIX", image: "https://static.wixstatic.com/media/bd0ac1_6c929514663445fcbac1773bc39ecf77~mv2.png", upright: "開心看片型｜就是爽就是開心", reversed: "無感型｜明明是好片但看完卻沒感覺" },
+      { name: "審判", number: "XX", image: "https://static.wixstatic.com/media/bd0ac1_5a2a4024c2f3471e8efa0013e46747d4~mv2.png", upright: "重新評價型｜看第二次發現以前誤會這部片了", reversed: "自我審判型｜覺得自己品味很差" },
+      { name: "世界", number: "XXI", image: "https://static.wixstatic.com/media/bd0ac1_ce93c4a3ab1b495b83c01ed8b9164292~mv2.png", upright: "完美收官型｜系列電影最終章完美結局", reversed: "差一點點型｜就差一張票就集滿優惠" }
     ];
-    let currentLifeNumber=0, selectedCard=null;
-    const $=(id)=>document.getElementById(id); const show=(id)=>$(id).classList.remove('hidden'); const hide=(id)=>$(id).classList.add('hidden');
-    function startJourney(){ hide('startPage'); show('birthdayPage'); $('birthday').focus(); }
-    function calculateLifeNumber(e){ e.preventDefault(); const v=$('birthday').value; if(!v) return; const digits=v.replace(/-/g,''); let sum=[...digits].reduce((a,b)=>a+parseInt(b,10),0); while(sum>9){ sum=[...String(sum)].reduce((a,b)=>a+parseInt(b,10),0);} currentLifeNumber=sum; const data=lifeNumbers[sum]; $('lifeNumber').textContent=sum; $('lifeNumberIcon').textContent=data.icon; $('lifeNumberTitle').textContent=data.title; $('lifeNumberDesc').textContent=data.desc; hide('birthdayPage'); show('lifeNumberPage'); }
-    function showCardSelection(){ hide('lifeNumberPage'); show('cardPage'); const grid=$('cardGrid'); grid.innerHTML=''; const cards=[...rainbowCards].sort(()=>Math.random()-0.5).slice(0,8); cards.forEach((card,i)=>{ const el=document.createElement('div'); el.className='card w-32 h-44 sparkle-card mx-auto'; el.innerHTML=`<div class="card-inner"><div class="card-back bg-gradient-to-br from-purple-600 to-blue-600"><div class="text-white font-bold">彩虹卡</div></div><div class="card-front bg-gradient-to-br ${card.color}"><div class="text-white text-4xl">${card.icon}</div></div></div>`; el.addEventListener('click',()=>selectCard(card,el),{passive:true}); grid.appendChild(el); setTimeout(()=>el.classList.add('fade-in'), i*90); }); }
-    function selectCard(card,el){ if(selectedCard) return; selectedCard=card; el.classList.add('flipped'); setTimeout(showResult,700); }
-    function showResult(){ const d=lifeNumbers[currentLifeNumber]; $('resultIcon').textContent=selectedCard.icon; $('cardTitle').textContent=selectedCard.title; $('cardReading').textContent=selectedCard.reading; $('resultLifeNumber').textContent=`${currentLifeNumber} - ${d.title}`; $('resultCardDisplay').className=`w-16 h-20 bg-gradient-to-br ${selectedCard.color} rounded-lg shadow-lg sparkle-card flex flex-col items-center justify-center`; $('loveAdvice').textContent=selectedCard.loveAdvice; $('moneyAdvice').textContent=selectedCard.moneyAdvice; $('careerAdvice').textContent=selectedCard.careerAdvice; $('luckyColor').textContent=selectedCard.luckyColor; $('luckyColorName').textContent=selectedCard.luckyColorName; $('luckyNumber').textContent=selectedCard.luckyNumber; $('luckyNumberValue').textContent=selectedCard.luckyNumberValue; hide('cardPage'); show('resultPage'); }
-    function restartGame(){ currentLifeNumber=0; selectedCard=null; $('birthday').value=''; hide('resultPage'); show('startPage'); window.scrollTo({top:0,behavior:'smooth'}); }
-    function shareResult(){ const d=lifeNumbers[currentLifeNumber]; const text=`🔮 我的生命數字占卜結果：\n\n生命數字：${currentLifeNumber} - ${d.title}\n抽到牌卡：${selectedCard.title}\n\n${selectedCard.reading}\n\n快來試試你的生命數字占卜！`; if(navigator.share){ navigator.share({title:'生命數字占卜結果',text}); } else { navigator.clipboard.writeText(text).then(()=>alert('結果已複製到剪貼板！')); } }
-    document.addEventListener('DOMContentLoaded',()=>{ $('startBtn').addEventListener('click', startJourney, {passive:true}); $('birthdayForm').addEventListener('submit', calculateLifeNumber); $('chooseCardBtn').addEventListener('click', showCardSelection, {passive:true}); $('restartBtn').addEventListener('click', restartGame, {passive:true}); $('shareBtn').addEventListener('click', shareResult, {passive:true}); });
+
+    // ============================================
+    // 動作處理器 - 所有使用者互動的唯一入口
+    // ============================================
+    const ActionHandler = {
+      goToHome() {
+        if (!AppState.canExecute()) return;
+        AppState.lock();
+        AppState.clearAllTimers();
+        
+        AppState.currentPage = "home";
+        AppState.selectedCard = null;
+        render();
+        
+        const timer = setTimeout(() => AppState.unlock(), 800);
+        AppState.registerTimer(timer);
+      },
+      
+      goToGuide() {
+        if (!AppState.canExecute()) return;
+        AppState.lock();
+        AppState.clearAllTimers();
+        
+        AppState.currentPage = "guide";
+        render();
+        
+        const timer = setTimeout(() => AppState.unlock(), 800);
+        AppState.registerTimer(timer);
+      },
+      
+      goToRules() {
+        if (!AppState.canExecute()) return;
+        AppState.lock();
+        AppState.clearAllTimers();
+        
+        AppState.currentPage = "rules";
+        render();
+        
+        const timer = setTimeout(() => AppState.unlock(), 800);
+        AppState.registerTimer(timer);
+      },
+      
+      drawCard() {
+        if (!AppState.canExecute()) return;
+        AppState.lock();
+        AppState.clearAllTimers();
+        
+        AppState.shuffledCards = [...tarotCards].sort(() => Math.random() - 0.5);
+        AppState.currentPage = "shuffling";
+        render();
+        
+        const timer1 = setTimeout(() => {
+          if (AppState.currentPage !== "shuffling") return;
+          AppState.currentPage = "cutting";
+          render();
+        }, 2500);
+        AppState.registerTimer(timer1);
+        
+        const timer2 = setTimeout(() => {
+          if (AppState.currentPage !== "cutting") return;
+          AppState.currentPage = "spreading";
+          render();
+        }, 5000);
+        AppState.registerTimer(timer2);
+        
+        const timer3 = setTimeout(() => {
+          if (AppState.currentPage !== "spreading") return;
+          
+          // 生成選中的牌
+          const randomIndex = Math.floor(Math.random() * 22);
+          const isReversed = Math.random() < 0.5;
+          AppState.selectedCard = { ...AppState.shuffledCards[randomIndex], isReversed };
+          
+          // 立即解鎖，避免阻塞
+          AppState.unlock();
+          
+          // 切換到結果頁面
+          AppState.currentPage = "result";
+          render();
+        }, 8500);
+        AppState.registerTimer(timer3);
+      }
+    };
+
+    // ============================================
+    // 事件監聽器管理 - 確保只綁定一次
+    // ============================================
+    const EventManager = {
+      boundListeners: new Map(),
+      
+      attach(elementId, eventType, handler) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        const key = `${elementId}-${eventType}`;
+        
+        // 移除舊的監聽器
+        if (this.boundListeners.has(key)) {
+          const oldHandler = this.boundListeners.get(key);
+          element.removeEventListener(eventType, oldHandler);
+        }
+        
+        // 綁定新的監聽器
+        const wrappedHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handler(e);
+        };
+        
+        element.addEventListener(eventType, wrappedHandler, { passive: false, once: false });
+        this.boundListeners.set(key, wrappedHandler);
+      },
+      
+      detachAll() {
+        this.boundListeners.clear();
+      }
+    };
+
+    // ============================================
+    // 渲染輔助函數
+    // ============================================
+    function generateStarfield() {
+      let html = '<div class="starfield">';
+      for (let i = 0; i < 200; i++) {
+        const x = Math.random() * 100;
+        const y = Math.random() * 200;
+        const size = Math.random() * 2.5 + 0.5;
+        html += `<div class="star" style="left: ${x}%; top: ${y}%; width: ${size}px; height: ${size}px; opacity: ${Math.random() * 0.6 + 0.4};"></div>`;
+      }
+      html += '</div>';
+      return html;
+    }
+
+    function renderResultPage(card, baseSize) {
+      const app = document.getElementById("app");
+      app.innerHTML = generateStarfield();
+      
+      const container = document.createElement('main');
+      container.className = 'main-container';
+      container.style.cssText = 'min-height: 100%; display: flex; align-items: center; justify-content: center; padding: ' + (baseSize * 0.7) + 'px; position: relative;';
+      
+      const wrapper = document.createElement('div');
+      wrapper.className = 'slide-in';
+      wrapper.style.cssText = 'max-width: 750px; width: 95%; margin: 0 auto; display: flex; flex-direction: column; align-items: center;';
+      
+      const cardDisplay = document.createElement('div');
+      cardDisplay.className = 'golden-frame glow-animation result-card-display';
+      cardDisplay.style.cssText = 'background: linear-gradient(135deg, rgba(26, 26, 62, 0.95), rgba(15, 23, 42, 0.95)); border-radius: ' + (baseSize * 1) + 'px; padding: ' + (baseSize * 1) + 'px; text-align: center; margin-bottom: ' + (baseSize * 0.7) + 'px; box-shadow: 0 25px 100px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 215, 0, 0.25) inset; position: relative; width: 100%;';
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.style.cssText = 'margin-top: ' + (baseSize * 0.4) + 'px; font-size: ' + (baseSize * 0.95) + 'px; opacity: 0.9; margin-bottom: ' + (baseSize * 0.4) + 'px; letter-spacing: 1.5px; font-weight: 500;';
+      titleDiv.textContent = '你抽到的是';
+      cardDisplay.appendChild(titleDiv);
+      
+      const nameSection = document.createElement('div');
+      nameSection.style.cssText = 'margin: ' + (baseSize * 0.7) + 'px 0;';
+      const cardName = document.createElement('h2');
+      cardName.style.cssText = 'font-size: ' + (baseSize * 1.7) + 'px; font-weight: bold; background: linear-gradient(135deg, #ffd700, #fbbf24, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: ' + (baseSize * 0.4) + 'px; letter-spacing: 3px; filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5));';
+      cardName.textContent = card.name;
+      const cardNumber = document.createElement('div');
+      cardNumber.style.cssText = 'font-size: ' + (baseSize * 1.2) + 'px; opacity: 0.75; margin-bottom: ' + (baseSize * 0.4) + 'px; font-weight: 300; letter-spacing: 2.5px;';
+      cardNumber.textContent = card.number;
+      nameSection.appendChild(cardName);
+      nameSection.appendChild(cardNumber);
+      cardDisplay.appendChild(nameSection);
+      
+      const imageSection = document.createElement('div');
+      imageSection.style.cssText = 'margin: ' + (baseSize * 0.8) + 'px 0; position: relative;';
+      const glow = document.createElement('div');
+      glow.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: ' + (baseSize * 12) + 'px; height: ' + (baseSize * 12) + 'px; background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent); border-radius: 50%; filter: blur(35px);';
+      const img = document.createElement('img');
+      img.src = card.image;
+      img.alt = card.name;
+      img.style.cssText = 'width: 100%; max-width: ' + (baseSize * 9) + 'px; height: auto; border-radius: ' + (baseSize * 0.6) + 'px; border: 3px solid #ffd700; ' + (card.isReversed ? 'transform: rotate(180deg);' : '') + ' box-shadow: 0 15px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4); position: relative; z-index: 1; display: block; margin: 0 auto;';
+      img.onerror = function() { this.style.display = 'none'; this.nextElementSibling.style.display = 'block'; };
+      const fallback = document.createElement('div');
+      fallback.style.cssText = 'display: none; font-size: ' + (baseSize * 4.5) + 'px; filter: drop-shadow(0 12px 35px rgba(255, 215, 0, 0.6));';
+      fallback.textContent = '🎴';
+      imageSection.appendChild(glow);
+      imageSection.appendChild(img);
+      imageSection.appendChild(fallback);
+      cardDisplay.appendChild(imageSection);
+      
+      const meaningSection = document.createElement('div');
+      const isReversed = card.isReversed;
+      const bgGradient = isReversed ? 'rgba(220, 38, 38, 0.35), rgba(185, 28, 28, 0.25)' : 'rgba(34, 197, 94, 0.35), rgba(22, 163, 74, 0.25)';
+      const borderColor = isReversed ? 'rgba(239, 68, 68, 0.6)' : 'rgba(74, 222, 128, 0.6)';
+      const insetShadow = isReversed ? 'rgba(220, 38, 38, 0.15)' : 'rgba(34, 197, 94, 0.15)';
+      const lineColor = isReversed ? 'rgba(239, 68, 68, 0.7)' : 'rgba(74, 222, 128, 0.7)';
+      meaningSection.style.cssText = 'background: linear-gradient(135deg, ' + bgGradient + '); border: 2px solid ' + borderColor + '; border-radius: ' + (baseSize * 0.6) + 'px; padding: ' + (baseSize * 0.9) + 'px; margin-top: ' + (baseSize * 0.9) + 'px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 25px ' + insetShadow + ' inset; position: relative; overflow: hidden;';
+      
+      const topLine = document.createElement('div');
+      topLine.style.cssText = 'position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, ' + lineColor + ', transparent);';
+      meaningSection.appendChild(topLine);
+      
+      const badge = document.createElement('div');
+      const badgeBg = isReversed ? 'rgba(220, 38, 38, 0.35)' : 'rgba(34, 197, 94, 0.35)';
+      const badgeBorder = isReversed ? 'rgba(239, 68, 68, 0.6)' : 'rgba(74, 222, 128, 0.6)';
+      badge.style.cssText = 'display: inline-block; background: ' + badgeBg + '; padding: ' + (baseSize * 0.35) + 'px ' + (baseSize * 0.9) + 'px; border-radius: ' + (baseSize * 2.5) + 'px; margin-bottom: ' + (baseSize * 0.5) + 'px; border: 1px solid ' + badgeBorder + ';';
+      const badgeText = document.createElement('div');
+      const textColor = isReversed ? '#fca5a5' : '#86efac';
+      badgeText.style.cssText = 'font-size: ' + (baseSize * 0.9) + 'px; font-weight: bold; color: ' + textColor + '; letter-spacing: 1.5px;';
+      badgeText.textContent = isReversed ? '⤵ 逆位 ⤵' : '⤴ 正位 ⤴';
+      badge.appendChild(badgeText);
+      meaningSection.appendChild(badge);
+      
+      const meaningText = document.createElement('p');
+      meaningText.style.cssText = 'font-size: ' + (baseSize * 0.95) + 'px; line-height: 1.7; position: relative; z-index: 1; font-weight: 500;';
+      meaningText.textContent = isReversed ? card.reversed : card.upright;
+      meaningSection.appendChild(meaningText);
+      
+      const bottomLine = document.createElement('div');
+      bottomLine.style.cssText = 'position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, ' + lineColor + ', transparent);';
+      meaningSection.appendChild(bottomLine);
+      
+      cardDisplay.appendChild(meaningSection);
+      wrapper.appendChild(cardDisplay);
+      
+      const buttonGrid = document.createElement('div');
+      buttonGrid.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr 1fr; gap: ' + (baseSize * 0.6) + 'px; width: 100%; max-width: 750px;';
+      
+      const restartBtn = document.createElement('button');
+      restartBtn.id = 'restart-btn';
+      restartBtn.className = 'golden-frame';
+      restartBtn.style.cssText = 'background: linear-gradient(135deg, #6366f1, #4f46e5); padding: ' + (baseSize * 0.7) + 'px; border-radius: ' + (baseSize * 0.6) + 'px; font-size: ' + (baseSize * 0.75) + 'px; font-weight: bold; cursor: pointer; box-shadow: 0 6px 22px rgba(99, 102, 241, 0.5), 0 0 15px rgba(99, 102, 241, 0.25) inset; transition: all 0.3s ease; white-space: nowrap; touch-action: manipulation; user-select: none; border: none;';
+      restartBtn.textContent = '🔄 重新抽牌';
+      buttonGrid.appendChild(restartBtn);
+      
+      const homeBtn = document.createElement('button');
+      homeBtn.id = 'home-btn-result';
+      homeBtn.className = 'golden-frame';
+      homeBtn.style.cssText = 'background: linear-gradient(135deg, #8b5cf6, #7c3aed); padding: ' + (baseSize * 0.7) + 'px; border-radius: ' + (baseSize * 0.6) + 'px; font-size: ' + (baseSize * 0.75) + 'px; font-weight: bold; cursor: pointer; box-shadow: 0 6px 22px rgba(139, 92, 246, 0.5), 0 0 15px rgba(139, 92, 246, 0.25) inset; transition: all 0.3s ease; white-space: nowrap; touch-action: manipulation; user-select: none; border: none;';
+      homeBtn.textContent = '🏠 返回首頁';
+      buttonGrid.appendChild(homeBtn);
+      
+      const lineLink = document.createElement('a');
+      lineLink.href = 'https://page.line.me/714uxbzn?openExternalBrowser=1';
+      lineLink.target = '_blank';
+      lineLink.rel = 'noopener noreferrer';
+      lineLink.className = 'golden-frame';
+      lineLink.style.cssText = 'display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ffd700, #f59e0b, #ffd700); padding: ' + (baseSize * 0.7) + 'px; border-radius: ' + (baseSize * 0.6) + 'px; font-size: ' + (baseSize * 0.7) + 'px; font-weight: bold; cursor: pointer; color: #000000; box-shadow: 0 6px 22px rgba(255, 215, 0, 0.6), 0 0 15px rgba(255, 215, 0, 0.35) inset; transition: all 0.3s ease; white-space: nowrap; touch-action: manipulation; user-select: none; text-decoration: none;';
+      lineLink.textContent = '💬 加入威秀影城LINE@';
+      buttonGrid.appendChild(lineLink);
+      
+      wrapper.appendChild(buttonGrid);
+      container.appendChild(wrapper);
+      app.appendChild(container);
+      
+      // 綁定事件
+      EventManager.attach('restart-btn', 'click', ActionHandler.drawCard);
+      EventManager.attach('home-btn-result', 'click', ActionHandler.goToHome);
+    }
+
+    // ============================================
+    // 主渲染函數
+    // ============================================
+    function render() {
+      const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const app = document.getElementById("app");
+      const starfield = generateStarfield();
+      
+      if (AppState.currentPage === "home") {
+        app.innerHTML = starfield + `
+          <main class="main-container" style="min-height: 100%; display: flex; align-items: center; justify-content: center; padding: ${baseSize * 0.8}px; position: relative;">
+            <div class="golden-frame breathe-animation home-content-box" style="background: linear-gradient(135deg, rgba(26, 26, 62, 0.95), rgba(15, 23, 42, 0.95)); backdrop-filter: blur(30px); border-radius: ${baseSize * 1.2}px; padding: ${baseSize * 1.5}px ${baseSize * 1.2}px; max-width: 650px; width: 100%; max-height: 95%; position: relative; z-index: 1; box-shadow: 0 20px 100px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 215, 0, 0.25) inset; display: flex; flex-direction: column; justify-content: center;">
+              <div class="text-center" style="margin-bottom: ${baseSize * 1}px;">
+                <div style="margin-bottom: ${baseSize * 0.3}px;">
+                  <img src="https://static.wixstatic.com/media/bd0ac1_d2b79c1f87a444579a8077478d3703b4~mv2.png" alt="威秀影城" class="home-logo" style="width: 70%; max-width: ${baseSize * 10}px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.7));" onerror="this.style.display='none';">
+                </div>
+                <h1 class="home-title" style="font-size: ${baseSize * 1.2}px; font-weight: bold; background: linear-gradient(135deg, #ffd700 0%, #fbbf24 25%, #e0e7ff 50%, #fbbf24 75%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 4s ease-in-out infinite; margin-bottom: ${baseSize * 0.4}px; letter-spacing: 2px; line-height: 1.3;">
+                  ${config.app_title}
+                </h1>
+                <div style="font-size: ${baseSize * 0.9}px; opacity: 0.95; margin-bottom: ${baseSize * 0.3}px;" class="rune-symbol">⟡ ☆ ⟡</div>
+                <div style="width: ${baseSize * 3}px; height: 2px; background: linear-gradient(90deg, transparent, #ffd700, transparent); margin: ${baseSize * 0.5}px auto;"></div>
+              </div>
+              
+              <div class="home-subtitle" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.25)); border: 2px solid rgba(255, 215, 0, 0.4); border-radius: ${baseSize * 0.8}px; padding: ${baseSize * 1}px; margin-bottom: ${baseSize * 1.2}px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(99, 102, 241, 0.25) inset; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), transparent);"></div>
+                <p style="font-size: ${baseSize * 0.75}px; line-height: 1.5; text-align: center; position: relative; z-index: 1; white-space: pre-line; font-weight: 500;">${config.app_subtitle}</p>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), transparent);"></div>
+              </div>
+              
+              <button id="start-btn" class="golden-frame glow-animation main-button" style="background: linear-gradient(135deg, ${config.primary_action_color}, #6366f1, ${config.primary_action_color}); background-size: 200% auto; padding: ${baseSize * 0.9}px; width: 100%; border-radius: ${baseSize * 0.8}px; font-size: ${baseSize * 1}px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 12px 50px rgba(67, 56, 202, 0.5), 0 0 25px rgba(99, 102, 241, 0.4) inset; position: relative; overflow: hidden; margin-bottom: ${baseSize * 1}px; touch-action: manipulation; user-select: none; border: none;">
+                <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: shimmer 3s infinite;"></div>
+                <span class="rune-symbol" style="position: relative; z-index: 1;">✨ ${config.start_button_text} ✨</span>
+              </button>
+              
+              <div class="button-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: ${baseSize * 0.8}px;">
+                <button id="rules-btn" class="golden-frame secondary-button" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(217, 119, 6, 0.25)); padding: ${baseSize * 0.7}px; border-radius: ${baseSize * 0.6}px; font-size: ${baseSize * 0.7}px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); touch-action: manipulation; user-select: none; border: none;">抽牌規則</button>
+                <button id="guide-btn" class="golden-frame secondary-button" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(217, 119, 6, 0.25)); padding: ${baseSize * 0.7}px; border-radius: ${baseSize * 0.6}px; font-size: ${baseSize * 0.7}px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); touch-action: manipulation; user-select: none; border: none;">認識塔羅牌</button>
+              </div>
+              
+              <div style="text-align: center; margin-top: ${baseSize * 0.8}px; font-size: ${baseSize * 0.6}px; opacity: 0.6; letter-spacing: 2px;">✧ ･ﾟ · ✦ · ･ﾟ · ✧</div>
+            </div>
+          </main>
+        `;
+        
+        EventManager.attach('start-btn', 'click', ActionHandler.drawCard);
+        EventManager.attach('rules-btn', 'click', ActionHandler.goToRules);
+        EventManager.attach('guide-btn', 'click', ActionHandler.goToGuide);
+        
+      } else if (AppState.currentPage === "shuffling") {
+        app.innerHTML = starfield + `
+          <main class="main-container" style="min-height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+            <div style="position: relative; width: 100%; height: 100%;">
+              ${Array.from({length: 22}, (_, i) => {
+                const angle = (Math.PI * 2 * i) / 22;
+                const radius = Math.min(window.innerWidth, window.innerHeight) * 0.65;
+                const endX = Math.cos(angle) * radius;
+                const endY = Math.sin(angle) * radius;
+                const rotation = Math.random() * 720 + 360;
+                return `
+                  <div style="position: absolute; top: 50%; left: 50%; width: ${baseSize * 4}px; height: ${baseSize * 6}px; transform: translate(-50%, -50%); animation: explosionCard${i} 2s ease-out forwards;">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a3e, #0f172a); border: 3px solid #ffd700; border-radius: ${baseSize * 0.6}px; display: flex; align-items: center; justify-content: center; font-size: ${baseSize * 2.5}px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.7);">
+                      <img src="https://static.wixstatic.com/media/bd0ac1_90e5fd2318f6426798f1683b3a48a473~mv2.png" alt="塔羅牌" style="width: 100%; height: 100%; object-fit: cover; border-radius: ${baseSize * 0.4}px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                      <div style="display: none;">🎴</div>
+                    </div>
+                  </div>
+                  <style>
+                    @keyframes explosionCard${i} {
+                      0% {
+                        transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+                        opacity: 0;
+                      }
+                      40% {
+                        transform: translate(calc(-50% + ${endX}px), calc(-50% + ${endY}px)) scale(1) rotate(${rotation}deg);
+                        opacity: 1;
+                      }
+                      100% {
+                        transform: translate(calc(-50% + ${endX * 1.5}px), calc(-50% + ${endY * 1.5}px)) scale(0.8) rotate(${rotation + 180}deg);
+                        opacity: 0;
+                      }
+                    }
+                  </style>
+                `;
+              }).join('')}
+              <div style="position: absolute; top: 18%; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; width: 90%; max-width: 900px;">
+                <h2 class="animation-title" style="font-size: ${baseSize * 1.6}px; font-weight: bold; background: linear-gradient(135deg, #ffd700 0%, #fbbf24 25%, #e0e7ff 50%, #fbbf24 75%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 4s ease-in-out infinite; margin-bottom: ${baseSize * 0.7}px; letter-spacing: 3px; white-space: nowrap;">✨ 洗牌中 ✨</h2>
+                <p style="font-size: ${baseSize * 1.2}px; opacity: 0.95; text-shadow: 0 0 15px rgba(224, 231, 255, 0.7); white-space: nowrap; font-weight: 500;">威秀塔羅牌靈魂指引</p>
+              </div>
+            </div>
+          </main>
+        `;
+      } else if (AppState.currentPage === "cutting") {
+        app.innerHTML = starfield + `
+          <main class="main-container" style="min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative; padding-top: ${baseSize * 7}px;">
+            <div style="position: absolute; top: ${baseSize * 4}px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 100; width: 90%; max-width: 900px;">
+              <h2 class="animation-title" style="font-size: ${baseSize * 1.6}px; font-weight: bold; background: linear-gradient(135deg, #ffd700 0%, #fbbf24 25%, #e0e7ff 50%, #fbbf24 75%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 4s ease-in-out infinite; margin-bottom: ${baseSize * 0.7}px; letter-spacing: 3px; white-space: nowrap;">✨ 切牌中 ✨</h2>
+              <p style="font-size: ${baseSize * 1.2}px; opacity: 0.95; text-shadow: 0 0 15px rgba(224, 231, 255, 0.7); white-space: nowrap; font-weight: 500;">重排你的命運軌跡</p>
+            </div>
+            <div class="card-spread" style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+              <div style="position: relative; width: ${baseSize * 14}px; height: ${baseSize * 9}px;">
+                ${Array.from({length: 22}, (_, i) => `
+                  <div style="position: absolute; top: 50%; left: 50%; width: ${baseSize * 4}px; height: ${baseSize * 6}px; transform: translate(-50%, -50%) translateX(${-baseSize * 2 + i * (baseSize * 0.18)}px) translateY(${i * (baseSize * 0.09)}px) rotate(${i * 0.5}deg); transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); animation: cutCard${i} 2.5s ease-in-out forwards;">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a3e, #0f172a); border: 3px solid #ffd700; border-radius: ${baseSize * 0.6}px; display: flex; align-items: center; justify-content: center; font-size: ${baseSize * 2.5}px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.7);">
+                      <img src="https://static.wixstatic.com/media/bd0ac1_90e5fd2318f6426798f1683b3a48a473~mv2.png" alt="塔羅牌" style="width: 100%; height: 100%; object-fit: cover; border-radius: ${baseSize * 0.4}px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                      <div style="display: none;">🎴</div>
+                    </div>
+                  </div>
+                  <style>
+                    @keyframes cutCard${i} {
+                      0% {
+                        transform: translate(-50%, -50%) translateX(${-baseSize * 2 + i * (baseSize * 0.18)}px) translateY(${i * (baseSize * 0.09)}px) rotate(${i * 0.5}deg);
+                      }
+                      50% {
+                        transform: translate(-50%, -50%) translateX(${i < 11 ? -baseSize * 5 : baseSize * 5}px) translateY(${i * (baseSize * 0.12)}px) rotate(${i < 11 ? -6 : 6}deg);
+                      }
+                      100% {
+                        transform: translate(-50%, -50%) translateX(${-baseSize * 2 + (21 - i) * (baseSize * 0.18)}px) translateY(${(21 - i) * (baseSize * 0.09)}px) rotate(${(21 - i) * 0.5}deg);
+                      }
+                    }
+                  </style>
+                `).join('')}
+              </div>
+            </div>
+          </main>
+        `;
+      } else if (AppState.currentPage === "spreading") {
+        app.innerHTML = starfield + `
+          <main class="main-container" style="min-height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+            <div style="position: relative; width: 100%; height: 100%;">
+              ${AppState.shuffledCards.map((card, i) => {
+                const angle = (Math.PI * 2 * i) / 22;
+                const radius = Math.min(window.innerWidth, window.innerHeight) * 0.85;
+                const endX = Math.cos(angle) * radius;
+                const endY = Math.sin(angle) * radius;
+                const rotation = Math.random() * 1080 + 720;
+                const delay = Math.random() * 0.8;
+                return `
+                  <div style="position: absolute; top: 50%; left: 50%; width: ${baseSize * 4}px; height: ${baseSize * 6}px; transform: translate(-50%, -50%); animation: fairySpread${i} 3s ease-out ${delay}s forwards;">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a3e, #0f172a); border: 3px solid #ffd700; border-radius: ${baseSize * 0.6}px; display: flex; align-items: center; justify-content: center; font-size: ${baseSize * 2.5}px; box-shadow: 0 0 45px rgba(255, 215, 0, 0.85);">
+                      <img src="https://static.wixstatic.com/media/bd0ac1_90e5fd2318f6426798f1683b3a48a473~mv2.png" alt="塔羅牌" style="width: 100%; height: 100%; object-fit: cover; border-radius: ${baseSize * 0.4}px; pointer-events: none;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                      <div style="display: none; font-size: ${baseSize * 3}px;">🎴</div>
+                    </div>
+                  </div>
+                  <style>
+                    @keyframes fairySpread${i} {
+                      0% {
+                        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                        opacity: 1;
+                      }
+                      50% {
+                        transform: translate(calc(-50% + ${endX * 0.6}px), calc(-50% + ${endY * 0.6}px)) scale(1.2) rotate(${rotation * 0.5}deg);
+                        opacity: 1;
+                      }
+                      100% {
+                        transform: translate(calc(-50% + ${endX * 1.5}px), calc(-50% + ${endY * 1.5}px)) scale(0.3) rotate(${rotation}deg);
+                        opacity: 0;
+                      }
+                    }
+                  </style>
+                `;
+              }).join('')}
+            </div>
+          </main>
+        `;
+      } else if (AppState.currentPage === "result" && AppState.selectedCard) {
+        renderResultPage(AppState.selectedCard, baseSize);
+      } else if (AppState.currentPage === "guide") {
+        app.innerHTML = starfield + `
+          <main class="main-container" style="min-height: 100%; padding: ${baseSize * 1.5}px;">
+            <div style="max-width: 1000px; margin: 0 auto;">
+              <h2 style="font-size: ${baseSize * 2}px; font-weight: bold; color: #ffd700; margin-bottom: ${baseSize * 0.7}px; text-align: center; letter-spacing: 2px;">威秀影城22張塔羅牌義</h2>
+              <p style="font-size: ${baseSize * 1.1}px; text-align: center; opacity: 0.9; margin-bottom: ${baseSize * 1.8}px; letter-spacing: 1.5px; font-weight: 500;">探索你生命旅程的22張靈魂指引</p>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: ${baseSize * 1.5}px; margin-bottom: ${baseSize * 1.5}px;">
+                ${tarotCards.map(card => `
+                  <div class="golden-frame" style="background: linear-gradient(135deg, rgba(26, 26, 62, 0.9), rgba(15, 23, 42, 0.9)); border-radius: ${baseSize * 0.8}px; padding: ${baseSize * 1.3}px;">
+                    <img src="${card.image}" alt="${card.name}" style="width: 100%; height: ${baseSize * 7.5}px; object-fit: contain; border-radius: ${baseSize * 0.6}px; margin-bottom: ${baseSize * 0.8}px;" onerror="this.style.display='none';">
+                    <h3 style="font-size: ${baseSize * 1.15}px; font-weight: bold; color: #ffd700; margin-bottom: ${baseSize * 0.6}px; letter-spacing: 1px;">${card.number}. ${card.name}</h3>
+                    <p style="font-size: ${baseSize * 0.85}px; opacity: 0.9; margin-bottom: ${baseSize * 0.7}px; line-height: 1.6;"><span style="color: #4ade80; font-weight: bold;">正位</span> ${card.upright}</p>
+                    <p style="font-size: ${baseSize * 0.85}px; opacity: 0.9; line-height: 1.6;"><span style="color: #f87171; font-weight: bold;">逆位</span> ${card.reversed}</p>
+                  </div>
+                `).join('')}
+              </div>
+              <button id="home-btn-guide" class="golden-frame" style="background: ${config.primary_action_color}; padding: ${baseSize * 1.1}px ${baseSize * 3}px; border-radius: ${baseSize * 0.8}px; font-size: ${baseSize * 1.2}px; font-weight: bold; cursor: pointer; display: block; margin: 0 auto; box-shadow: 0 8px 30px rgba(67, 56, 202, 0.5); touch-action: manipulation; user-select: none; border: none;">返回首頁</button>
+            </div>
+          </main>
+        `;
+        EventManager.attach('home-btn-guide', 'click', ActionHandler.goToHome);
+      } else if (AppState.currentPage === "rules") {
+        app.innerHTML = starfield + `
+          <main class="main-container" style="min-height: 100%; display: flex; align-items: center; justify-content: center; padding: ${baseSize * 1.5}px;">
+            <div class="slide-in" style="max-width: 700px; width: 100%;">
+              <div class="golden-frame" style="background: linear-gradient(135deg, rgba(26, 26, 62, 0.9), rgba(15, 23, 42, 0.9)); border-radius: ${baseSize * 1.3}px; padding: ${baseSize * 2.2}px;">
+                <h2 style="font-size: ${baseSize * 1.8}px; font-weight: bold; color: #ffd700; margin-bottom: ${baseSize * 1.5}px; text-align: center; letter-spacing: 2px;">抽牌規則</h2>
+                <div style="background: rgba(99, 102, 241, 0.25); border: 2px solid rgba(99, 102, 241, 0.4); border-radius: ${baseSize * 0.8}px; padding: ${baseSize * 1.3}px; margin-bottom: ${baseSize * 1.3}px;">
+                  <h3 style="font-size: ${baseSize * 1.15}px; font-weight: bold; margin-bottom: ${baseSize * 0.7}px; color: #fbbf24;">1️⃣ 靜心準備</h3>
+                  <p style="font-size: ${baseSize * 0.95}px; line-height: 1.8; font-weight: 500;">深呼吸三次，放空心思。想想你現在的心情狀態，不需要有問題。</p>
+                </div>
+                <div style="background: rgba(99, 102, 241, 0.25); border: 2px solid rgba(99, 102, 241, 0.4); border-radius: ${baseSize * 0.8}px; padding: ${baseSize * 1.3}px; margin-bottom: ${baseSize * 1.3}px;">
+                  <h3 style="font-size: ${baseSize * 1.15}px; font-weight: bold; margin-bottom: ${baseSize * 0.7}px; color: #fbbf24;">2️⃣ 憑直覺選牌</h3>
+                  <p style="font-size: ${baseSize * 0.95}px; line-height: 1.8; font-weight: 500;">點擊「啟動神秘塔羅」，從展開的牌中選一張最有感覺的。</p>
+                </div>
+                <div style="background: rgba(99, 102, 241, 0.25); border: 2px solid rgba(99, 102, 241, 0.4); border-radius: ${baseSize * 0.8}px; padding: ${baseSize * 1.3}px; margin-bottom: ${baseSize * 1.8}px;">
+                  <h3 style="font-size: ${baseSize * 1.15}px; font-weight: bold; margin-bottom: ${baseSize * 0.7}px; color: #fbbf24;">3️⃣ 解讀訊息</h3>
+                  <p style="font-size: ${baseSize * 0.95}px; line-height: 1.8; font-weight: 500;">牌卡會告訴你現在的狀態。正位跟逆位代表不同的解讀角度。</p>
+                </div>
+                <button id="home-btn-rules" class="golden-frame" style="background: ${config.primary_action_color}; padding: ${baseSize * 1.1}px ${baseSize * 3}px; border-radius: ${baseSize * 0.8}px; font-size: ${baseSize * 1.2}px; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 30px rgba(67, 56, 202, 0.5); touch-action: manipulation; user-select: none; border: none;">返回首頁</button>
+              </div>
+            </div>
+          </main>
+        `;
+        EventManager.attach('home-btn-rules', 'click', ActionHandler.goToHome);
+      }
+    }
+
+    // ============================================
+    // SDK 配置與初始化
+    // ============================================
+    async function onConfigChange(config) {
+      const app = document.getElementById("app");
+      app.style.backgroundColor = config.background_color || defaultConfig.background_color;
+      app.style.color = config.text_color || defaultConfig.text_color;
+      document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+      render();
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (value) => { config.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); } },
+            { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (value) => { config.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); } },
+            { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (value) => { config.secondary_action_color = value; window.elementSdk.setConfig({ secondary_action_color: value }); } }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => { config.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["app_title", config.app_title || defaultConfig.app_title],
+          ["app_subtitle", config.app_subtitle || defaultConfig.app_subtitle],
+          ["start_button_text", config.start_button_text || defaultConfig.start_button_text],
+          ["restart_button_text", config.restart_button_text || defaultConfig.restart_button_text],
+          ["guide_button_text", config.guide_button_text || defaultConfig.guide_button_text]
+        ])
+      });
+    }
+
+    // ============================================
+    // 啟動應用
+    // ============================================
+    render();
   </script>
-</body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b85bd364688a9c2',t:'MTc2NzQ3NzMxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
