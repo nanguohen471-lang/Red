@@ -5125,6 +5125,41 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
+
+<script>
+(function () {
+  const INTRO_KEY = 'INTRO_PLAYED_ONCE';
+  const intro = document.getElementById('disneyIntro');
+  if (!intro) return;
+
+  function removeIntro() {
+    intro.classList.add('hidden');
+    intro.style.display = 'none';
+    document.body.style.overflow = '';
+    sessionStorage.setItem(INTRO_KEY, '1');
+  }
+
+  if (sessionStorage.getItem(INTRO_KEY) === '1') {
+    removeIntro();
+    return;
+  }
+
+  document.body.style.overflow = 'hidden';
+  const failsafe = setTimeout(removeIntro, 3500);
+
+  intro.addEventListener('animationend', () => {
+    clearTimeout(failsafe);
+    removeIntro();
+  }, { once: true });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      setTimeout(removeIntro, 500);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
 
